@@ -1,10 +1,10 @@
 package innopolis.nikbird.org.intentservice;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -13,11 +13,13 @@ import android.widget.Toast;
 
 public class ValutaService extends IntentService {
 
-    private Handler mHadler;
+    private static Handler sHadler;
 
     public ValutaService() {
         super("ValutaService");
-        mHadler = new Handler();
+        if (sHadler == null) {
+            sHadler = new Handler();
+        }
     }
 
     private static Thread mValutaThread;
@@ -55,7 +57,7 @@ public class ValutaService extends IntentService {
                             message.append("\neu course is: " + 100);
                         }
                         if (!"".equals(message.toString())) {
-                            mHadler.post(new Runnable() {
+                            sHadler.post(new Runnable() {
                                 private String msg = message.toString();
                                 @Override
                                 public void run() {
